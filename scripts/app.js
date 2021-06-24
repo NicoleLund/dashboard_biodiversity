@@ -1,6 +1,3 @@
-
-
-
 /* HINT 1
 
  When importing json, try using metadata
@@ -28,50 +25,45 @@ HINT 2
 // Initialize page
 var sample_id = 945;
 var data = jsonData;
-buildBar(sample_id, data);
+buildBar(sample_id, data.samples);
 
 
 // Create bar chart in "bar" section
-function buildBar(selectedSample, data) {
-   // // Load samples.json
-   // d3.json("data/samples.json").then((importedData) => {
-   // Retrieve all data
-   // var data = importedData;
-   console.log("------data-------");
-   console.log(data);
-   var metadata = data.metadata;
-   console.log("------metadata-------");
-   console.log(metadata);
-   var names = data.names;
-   console.log("------names-------");
-   console.log(names);
-   var samples = data.samples;
-   console.log("------samples-------");
-   console.log(samples);
+function buildBar(selectedSample, samples) {
+   // Retrieve selected sample data
+   var sampleData = samples.filter(sampleObj => sampleObj.id == selectedSample);
+   sampleData = sampleData[0];
 
-   // Retrieve selected data
-   console.log(`------Retrieve data for sample_id=${selectedSample}-------`);
-   var metadataResultArray = metadata.filter(sampleObj => sampleObj.id == selectedSample);
-   console.log("------metadata-------");
-   console.log(metadataResultArray[0]);
-   var namesResultArray = names.filter(sampleObj => sampleObj == selectedSample);
-   console.log("------names-------");
-   console.log(namesResultArray[0]);
-   var samplesResultArray = samples.filter(sampleObj => sampleObj.id == selectedSample);
-   console.log("------samples-------");
-   console.log(samplesResultArray[0]);
+   // console.log("------samples-------");
+   // console.log(samples);
+   console.log(`------Retrieve samples for sample_id=${selectedSample}-------`);
+   console.log(sampleData);
 
+   // Reorganize data into array of objects
+   barData = [];
+   for (i=0; i < sampleData.sample_values.length; i++) {
+      barData.push({
+         "sample_id":sampleData.id,
+         "otu_id":sampleData.otu_ids[i],
+         "sample_value":sampleData.sample_values[i],
+         "otu_label":sampleData.otu_labels[i]
+      });
+   };
+   
    // Sort the samplesResultArray by sample_values
-   samplesResultArray.sort((a,b) => parseInt(b.sample_values) - parseInt(a.sample_values));
+   barData.sort((a,b) => b.sample_value - a.sample_value);
 
-   // Slice the first 10 items
-   samplesResultArray = samplesResultArray.slice(0,10);
+   // Slice the top 10 objects
+   barData = barData.slice(0,10);
+
+   // Reverse the array due to Plotly's defaults
+   barData = barData.reverse();
 
    // Define data trace
    var barTrace = [{
-      x: samplesResultArray.map(row => row.sample_values),
-      y: samplesResultArray.map(row => `OTU ${row.otu_ids}`),
-      text: samplesResultArray.map(row => row.otu_labels),
+      x: barData.map(row => row.sample_value),
+      y: barData.map(row => `OTU ${row.otu_id}`),
+      text: barData.map(row => row.otu_label),
       type: "bar",
       orientation: "h"
    }];
@@ -83,12 +75,11 @@ function buildBar(selectedSample, data) {
 
    // Define configuration
    var barConfig = {
-      responsive: true
+      responsive: true,
+      displayModeBar: false
    };
 
    // Render Plot
    Plotly.newPlot("bar", barTrace, barLayout, barConfig);
-
-   // });
 };
 
