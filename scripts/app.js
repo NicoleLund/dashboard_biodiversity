@@ -46,6 +46,7 @@ d3.json("data/samples.json").then((importedData) => {
 // Initialize page
 var sample_id = 945;
 getSampleData(sample_id, metadata, names, samples);
+buildBar(samplesResultArray);
 
 
 // Retrieve data for selected sample
@@ -66,3 +67,10 @@ function getSampleData(sample_id, metadata, names, samples) {
 
    return metadataResultArray, namesResultArray, samplesResultArray;
 };
+
+
+// Create bar chart in "bar" section
+function buildBar(samples) {
+   console.log(`Build bar chart for ${samples.id}`);
+};
+
