@@ -32,11 +32,13 @@ sampleIds.forEach((id) => {
 // Initialize page
 popDemographic(sampleIds[0],data.metadata);
 buildBar(sampleIds[0], data.samples);
+buildBubble(sampleIds[0], data.samples);
 
 // Update page when Test Subject is changed
 function optionChanged(sample_id) {
    popDemographic(sample_id,data.metadata);
    buildBar(sample_id, data.samples);
+   buildBubble(sample_id, data.samples);
 };
 
 // Add Demographic Info for Test Subject
@@ -106,3 +108,37 @@ function buildBar(selectedSample, samples) {
    Plotly.newPlot("bar", barTrace, barLayout, barConfig);
 };
 
+function buildBubble(selectedSample, samples) {
+   // Retrieve selected sample data
+   var sampleData = samples.filter(sampleObj => sampleObj.id == selectedSample);
+   sampleData = sampleData[0];
+
+   // Define data trace
+   var bubbleTrace = [{
+      x: sampleData.otu_ids,
+      y: sampleData.sample_values,
+      text: sampleData.otu_labels,
+      mode: 'markers',
+      marker: {
+         color: sampleData.otu_ids,
+         size: sampleData.sample_values
+      }
+   }];
+   console.log(bubbleTrace);
+
+   // Define layout
+   var bubbleLayout = {
+      title: `All OTUs present in Test Subject ${selectedSample}`,
+      xaxis: {title: 'OTU ID'},
+      yaxis: {title: 'OTU Abundance'}
+   };
+
+   // Define configuration
+   var bubbleConfig = {
+      responsive: true,
+      displayModeBar: false
+   };
+
+   // Render Plot
+   Plotly.newPlot("bubble", bubbleTrace, bubbleLayout, bubbleConfig);
+};
