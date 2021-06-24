@@ -19,7 +19,7 @@ HINT 2
  Event Listener is different in this html, review id="selDataset" in index.html
  <select id="selDataset" onchange="optionChanged(this.value)"></select>
 
-*/s
+*/
 
 // Load samples.json
 d3.json("data/samples.json").then((importedData) => {
