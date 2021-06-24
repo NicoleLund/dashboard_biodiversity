@@ -70,7 +70,14 @@ function getSampleData(sample_id, metadata, names, samples) {
 
 
 // Create bar chart in "bar" section
-function buildBar(samples) {
-   console.log(`Build bar chart for ${samples.id}`);
+function buildBar(selectedSample) {
+   console.log(`Build bar chart for ${selectedSample.id}`);
+   var otu_ids = selectedSample.otu_ids;
+   var otu_labels = selectedSample.otu_labels;
+   var sample_values  = selectedSample.sample_values;
+   var otu_names = otu_ids.forEach(id => `OTU ${id}`);
+   console.log(otu_names);
+   console.log(otu_labels);
+   console.log(sample_values);
 };
 
