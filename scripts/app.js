@@ -29,9 +29,13 @@ sampleIds.forEach((id) => {
 });
 
 // Initialize page
-var sample_id = 945;
-buildBar(sample_id, data.samples);
+buildBar(sampleIds[0], data.samples);
 
+
+// Update page when Test Subject is changed
+function optionChanged(sample_id) {
+   buildBar(sample_id, data.samples);
+};
 
 // Create bar chart in "bar" section
 function buildBar(selectedSample, samples) {
