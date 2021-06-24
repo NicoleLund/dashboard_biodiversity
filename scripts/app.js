@@ -24,60 +24,51 @@ HINT 2
 
 
 
-// Load samples.json
-d3.json("data/samples.json").then((importedData) => {
-   var data = importedData;
-   console.log("------data-------");
-   console.log(data);
-
-   var metadata = data.metadata;
-   console.log("------metadata-------");
-   console.log(metadata);
-
-   var names = data.names;
-   console.log("------names-------");
-   console.log(names);
-
-   var samples = data.samples;
-   console.log("------samples-------");
-   console.log(samples);
-});
 
 // Initialize page
 var sample_id = 945;
-getSampleData(sample_id, metadata, names, samples);
-buildBar(samplesResultArray);
-
-
-// Retrieve data for selected sample
-function getSampleData(sample_id, metadata, names, samples) {
-   console.log(`------Retrieve data for sample_id=${sample_id}-------`);
-
-   var metadataResultArray = metadata.filter(sampleObj => sampleObj.id == sample_id);
-   console.log("------metadata-------");
-   console.log(metadataResultArray[0]);
-
-   var namesResultArray = names.filter(sampleObj => sampleObj == sample_id);
-   console.log("------names-------");
-   console.log(namesResultArray[0]);
-
-   var samplesResultArray = samples.filter(sampleObj => sampleObj.id == sample_id);
-   console.log("------samples-------");
-   console.log(samplesResultArray[0]);
-
-   return metadataResultArray, namesResultArray, samplesResultArray;
-};
+buildBar(sample_id);
 
 
 // Create bar chart in "bar" section
 function buildBar(selectedSample) {
-   console.log(`Build bar chart for ${selectedSample.id}`);
-   var otu_ids = selectedSample.otu_ids;
-   var otu_labels = selectedSample.otu_labels;
-   var sample_values  = selectedSample.sample_values;
-   var otu_names = otu_ids.forEach(id => `OTU ${id}`);
-   console.log(otu_names);
-   console.log(otu_labels);
-   console.log(sample_values);
+   // Load samples.json
+   d3.json("data/samples.json").then((importedData) => {
+      // Retrieve all data
+      var data = importedData;
+      console.log("------data-------");
+      console.log(data);
+      var metadata = data.metadata;
+      console.log("------metadata-------");
+      console.log(metadata);
+      var names = data.names;
+      console.log("------names-------");
+      console.log(names);
+      var samples = data.samples;
+      console.log("------samples-------");
+      console.log(samples);
+
+      // Retrieve selected data
+      console.log(`------Retrieve data for sample_id=${selectedSample}-------`);
+      var metadataResultArray = metadata.filter(sampleObj => sampleObj.id == selectedSample);
+      console.log("------metadata-------");
+      console.log(metadataResultArray[0]);
+      var namesResultArray = names.filter(sampleObj => sampleObj == selectedSample);
+      console.log("------names-------");
+      console.log(namesResultArray[0]);
+      var samplesResultArray = samples.filter(sampleObj => sampleObj.id == selectedSample);
+      console.log("------samples-------");
+      console.log(samplesResultArray[0]);
+
+      // Retrieve bar chart values
+      console.log(`Build bar chart for ${samplesResultArray.id}`);
+      var otu_ids = samplesResultArray.otu_ids;
+      var otu_labels = samplesResultArray.otu_labels;
+      var sample_values  = samplesResultArray.sample_values;
+      var otu_names = otu_ids.forEach(id => `OTU ${id}`);
+      console.log(otu_names);
+      console.log(otu_labels);
+      console.log(sample_values);
+   });
 };
 
