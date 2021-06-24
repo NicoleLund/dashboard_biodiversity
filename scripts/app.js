@@ -20,6 +20,7 @@ HINT 2
  
 //Get Data
 var data = jsonData;
+console.log(data);
 
 // Populate Drop Down Menu
 var dropMenu = d3.select("#selDataset");
@@ -29,12 +30,25 @@ sampleIds.forEach((id) => {
 });
 
 // Initialize page
+popDemographic(sampleIds[0],data.metadata);
 buildBar(sampleIds[0], data.samples);
-
 
 // Update page when Test Subject is changed
 function optionChanged(sample_id) {
+   popDemographic(sample_id,data.metadata);
    buildBar(sample_id, data.samples);
+};
+
+// Add Demographic Info for Test Subject
+function popDemographic(selectedSample, metadata) {
+   // Retrieve selected metadata
+   var meta = metadata.filter(metaObj => metaObj.id == selectedSample);
+   // console.log(meta[0]);
+   var demoPanel = d3.select("#sample-metadata");
+   Object.entries(meta[0]).forEach(([key, value]) => {
+      console.log(`Metadata [Key: ${key}, Value: ${value}]`);
+      demoPanel.append('p').text(`${key}: ${value}`);
+   });
 };
 
 // Create bar chart in "bar" section
