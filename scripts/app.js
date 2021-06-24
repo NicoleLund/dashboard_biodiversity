@@ -17,14 +17,19 @@ HINT 2
  <select id="selDataset" onchange="optionChanged(this.value)"></select> 
  */
 
+ 
+//Get Data
+var data = jsonData;
 
-
-
-
+// Populate Drop Down Menu
+var dropMenu = d3.select("#selDataset");
+let sampleIds = data.names;
+sampleIds.forEach((id) => {
+   dropMenu.append("option").text(id).property("value",id);
+});
 
 // Initialize page
 var sample_id = 945;
-var data = jsonData;
 buildBar(sample_id, data.samples);
 
 
