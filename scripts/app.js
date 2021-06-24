@@ -47,6 +47,7 @@ function popDemographic(selectedSample, metadata) {
    var meta = metadata.filter(metaObj => metaObj.id == selectedSample);
    // console.log(meta[0]);
    var demoPanel = d3.select("#sample-metadata");
+   demoPanel.selectAll("p").remove();
    Object.entries(meta[0]).forEach(([key, value]) => {
       console.log(`Metadata [Key: ${key}, Value: ${value}]`);
       demoPanel.append('p').text(`${key}: ${value}`);
