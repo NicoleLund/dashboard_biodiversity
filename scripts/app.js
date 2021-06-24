@@ -27,77 +27,68 @@ HINT 2
 
 // Initialize page
 var sample_id = 945;
-buildBar(sample_id);
+var data = jsonData;
+buildBar(sample_id, data);
 
 
 // Create bar chart in "bar" section
-function buildBar(selectedSample) {
-   // Load samples.json
-   d3.json("data/samples.json").then((importedData) => {
-      // Retrieve all data
-      var data = importedData;
-      console.log("------data-------");
-      console.log(data);
-      var metadata = data.metadata;
-      console.log("------metadata-------");
-      console.log(metadata);
-      var names = data.names;
-      console.log("------names-------");
-      console.log(names);
-      var samples = data.samples;
-      console.log("------samples-------");
-      console.log(samples);
+function buildBar(selectedSample, data) {
+   // // Load samples.json
+   // d3.json("data/samples.json").then((importedData) => {
+   // Retrieve all data
+   // var data = importedData;
+   console.log("------data-------");
+   console.log(data);
+   var metadata = data.metadata;
+   console.log("------metadata-------");
+   console.log(metadata);
+   var names = data.names;
+   console.log("------names-------");
+   console.log(names);
+   var samples = data.samples;
+   console.log("------samples-------");
+   console.log(samples);
 
-      // Retrieve selected data
-      console.log(`------Retrieve data for sample_id=${selectedSample}-------`);
-      var metadataResultArray = metadata.filter(sampleObj => sampleObj.id == selectedSample);
-      console.log("------metadata-------");
-      console.log(metadataResultArray[0]);
-      var namesResultArray = names.filter(sampleObj => sampleObj == selectedSample);
-      console.log("------names-------");
-      console.log(namesResultArray[0]);
-      var samplesResultArray = samples.filter(sampleObj => sampleObj.id == selectedSample);
-      console.log("------samples-------");
-      console.log(samplesResultArray[0]);
+   // Retrieve selected data
+   console.log(`------Retrieve data for sample_id=${selectedSample}-------`);
+   var metadataResultArray = metadata.filter(sampleObj => sampleObj.id == selectedSample);
+   console.log("------metadata-------");
+   console.log(metadataResultArray[0]);
+   var namesResultArray = names.filter(sampleObj => sampleObj == selectedSample);
+   console.log("------names-------");
+   console.log(namesResultArray[0]);
+   var samplesResultArray = samples.filter(sampleObj => sampleObj.id == selectedSample);
+   console.log("------samples-------");
+   console.log(samplesResultArray[0]);
 
-      // Sort the samplesResultArray by sample_values
-      samplesResultArray.sort((a,b) => parseInt(b.sample_values) - parseInt(a.sample_values));
+   // Sort the samplesResultArray by sample_values
+   samplesResultArray.sort((a,b) => parseInt(b.sample_values) - parseInt(a.sample_values));
 
-      // Slice the first 10 items
-      samplesResultArray = samplesResultArray.slice(0,10);
+   // Slice the first 10 items
+   samplesResultArray = samplesResultArray.slice(0,10);
 
-      // Retrieve bar chart values
-      console.log(`Build bar chart for ${samplesResultArray.id}`);
-      var otu_ids = samplesResultArray.otu_ids;
-      var otu_labels = samplesResultArray.otu_labels;
-      var sample_values  = samplesResultArray.sample_values;
-      var otu_names = otu_ids.forEach(id => `OTU ${id}`);
-      console.log(otu_names);
-      console.log(otu_labels);
-      console.log(sample_values);
+   // Define data trace
+   var barTrace = [{
+      x: samplesResultArray.map(row => row.sample_values),
+      y: samplesResultArray.map(row => `OTU ${row.otu_ids}`),
+      text: samplesResultArray.map(row => row.otu_labels),
+      type: "bar",
+      orientation: "h"
+   }];
 
-      // Define data trace
-      var barTrace = [{
-         x: samplesResultArray.map(row => row.sample_values),
-         y: samplesResultArray.map(row => `OTU ${row.otu_ids}`),
-         text: samplesResultArray.map(row => row.otu_labels),
-         type: "bar",
-         orientation: "h"
-      }];
+   // Define layout
+   var barLayout = {
+      title: `OTUs present in patient ${selectedSample}`
+   };
 
-      // Define layout
-      var barLayout = {
-         title: `OTUs present in patient ${selectedSample}`
-      };
+   // Define configuration
+   var barConfig = {
+      responsive: true
+   };
 
-      // Define configuration
-      var barConfig = {
-         responsive: true
-      };
+   // Render Plot
+   Plotly.newPlot("bar", barTrace, barLayout, barConfig);
 
-      // Render Plot
-      Plotly.newPlot("bar", barTrace, barLayout, barConfig);
-
-   });
+   // });
 };
 
