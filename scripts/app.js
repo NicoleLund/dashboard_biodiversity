@@ -1,7 +1,7 @@
 
-/*
 
-HINT 1
+
+/* HINT 1
 
  When importing json, try using metadata
 
@@ -17,9 +17,12 @@ HINT 1
 HINT 2
 
  Event Listener is different in this html, review id="selDataset" in index.html
- <select id="selDataset" onchange="optionChanged(this.value)"></select>
+ <select id="selDataset" onchange="optionChanged(this.value)"></select> 
+ */
 
-*/
+
+
+
 
 // Load samples.json
 d3.json("data/samples.json").then((importedData) => {
