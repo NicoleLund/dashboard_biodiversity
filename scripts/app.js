@@ -41,22 +41,28 @@ d3.json("data/samples.json").then((importedData) => {
    var samples = data.samples;
    console.log("------samples-------");
    console.log(samples);
+});
 
-   // Review data for id=945
-   sample = 945
-   console.log("------Review data for id=495-------");
+// Initialize page
+var sample_id = 945;
+getSampleData(sample_id, metadata, names, samples);
 
-   var metadataResultArray = metadata.filter(sampleObj => sampleObj.id == sample);
+
+// Retrieve data for selected sample
+function getSampleData(sample_id, metadata, names, samples) {
+   console.log(`------Retrieve data for sample_id=${sample_id}-------`);
+
+   var metadataResultArray = metadata.filter(sampleObj => sampleObj.id == sample_id);
    console.log("------metadata-------");
    console.log(metadataResultArray[0]);
 
-   var namesResultArray = names.filter(sampleObj => sampleObj.id == sample);
+   var namesResultArray = names.filter(sampleObj => sampleObj == sample_id);
    console.log("------names-------");
    console.log(namesResultArray[0]);
 
-   var samplesResultArray = samples.filter(sampleObj => sampleObj.id == sample);
+   var samplesResultArray = samples.filter(sampleObj => sampleObj.id == sample_id);
    console.log("------samples-------");
    console.log(samplesResultArray[0]);
-});
 
-// Create bar chart in "bar" section
+   return metadataResultArray, namesResultArray, samplesResultArray;
+};
