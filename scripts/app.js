@@ -60,6 +60,12 @@ function buildBar(selectedSample) {
       console.log("------samples-------");
       console.log(samplesResultArray[0]);
 
+      // Sort the samplesResultArray by sample_values
+      samplesResultArray.sort((a,b) => parseInt(b.sample_values) - parseInt(a.sample_values));
+
+      // Slice the first 10 items
+      samplesResultArray = samplesResultArray.slice(0,10);
+
       // Retrieve bar chart values
       console.log(`Build bar chart for ${samplesResultArray.id}`);
       var otu_ids = samplesResultArray.otu_ids;
@@ -69,6 +75,29 @@ function buildBar(selectedSample) {
       console.log(otu_names);
       console.log(otu_labels);
       console.log(sample_values);
+
+      // Define data trace
+      var barTrace = [{
+         x: samplesResultArray.map(row => row.sample_values),
+         y: samplesResultArray.map(row => `OTU ${row.otu_ids}`),
+         text: samplesResultArray.map(row => row.otu_labels),
+         type: "bar",
+         orientation: "h"
+      }];
+
+      // Define layout
+      var barLayout = {
+         title: `OTUs present in patient ${selectedSample}`
+      };
+
+      // Define configuration
+      var barConfig = {
+         responsive: true
+      };
+
+      // Render Plot
+      Plotly.newPlot("bar", barTrace, barLayout, barConfig);
+
    });
 };
 
