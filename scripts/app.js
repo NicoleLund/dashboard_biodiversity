@@ -20,3 +20,17 @@ HINT 2
  <select id="selDataset" onchange="optionChanged(this.value)"></select>
 
 */s
+
+// Load samples.json
+d3.json("data/samples.json").then((importedData) => {
+   var data = importedData;
+   var metadata = data.metadata;
+   console.log(data);
+   console.log(metadata);
+
+   var resultArray = metadata.filter(sampleObj => sampleObj.id == sample);
+   var result = resultArray[0];
+   console.log(result);
+});
+
+// Create bar chart in "bar" section
