@@ -39,6 +39,7 @@ buildBubble(sampleIds[0], data.samples);
 function optionChanged(sample_id) {
    popDemographic(sample_id,data.metadata);
    buildBar(sample_id, data.samples);
+   buildGauge(sample_id, data.metadata);
    buildBubble(sample_id, data.samples);
 };
 
@@ -115,33 +116,15 @@ function buildGauge(selectedSample, metadata) {
    var meta = metadata.filter(metaObj => metaObj.id == selectedSample);
    // console.log(meta[0]);
    meta = meta[0];
-   washFreq = meta.wfreq;
+   var washFreq = meta.wfreq;
    console.log(washFreq);
 
-   // var gaugeTrace = [{
-   //    domain: {x:[0,1], y:[0,1]},
-   //    value: washFreq,
-   //    type: "indicator",
-   //    mode: "gauge+number",
-   //    gauge: {
-   //       axis: { range: [null, 9] },
-   //       steps: [
-   //          { range: [0-1], color: "rgba(236, 249, 236)"},
-   //          { range: [1-2], color: "#ecf9ec" },
-   //          { range: [2-3], color: "#ecf9ec" },
-   //          { range: [3-4], color: "#ecf9ec" },
-   //          { range: [4-5], color: "#ecf9ec" },
-   //          { range: [5-6], color: "#ecf9ec" },
-   //          { range: [6-7], color: "#ecf9ec" },
-   //          { range: [7-8], color: "#ecf9ec" },
-   //          { range: [8-9], color: "#ecf9ec" }
-   //       ]
-   //    },
-   // }];
+   //https://www.programmersought.com/article/72787385250/
+   //https://stackoverflow.com/questions/53211506/calculating-adjusting-the-needle-in-gauge-chart-plotly-js
 
    var gaugeTrace = [{
       type: "pie",
-      hole: 0.5,
+      hole: 0.4,
       rotation: 90,
       direction: "clockwise",
       values: [1,1,1,1,1,1,1,1,1,9],
@@ -149,25 +132,24 @@ function buildGauge(selectedSample, metadata) {
       textinfo: 'text',
       textposition: "inside",
       marker: {
-         colors: ['','','','','','','','','','white'],
-         labels: ["0-1","1-2","2-3","3-4","4-5","5-6","6-7","7-8","8-9",""],
-         hoverinfo: 'label'
+         colors: ['','','','','','','','','','white']
       },
       showlegend: false
    }];
 
    // Calculate arrow tip
-   var degrees = 0, radius = 0.6;
-   var radians = degrees * Math.PI / 180;
-   var x = -1 * radius * Math.cos(radians);
-   var y = radius * Math.sin(radians);
+   var x0 = 0.5, y0 = 0.5, radius = 0.25;
+   var radians = washFreq * Math.PI / 9;
+   var x = x0 - radius * Math.cos(radians);
+   var y = y0 + radius * Math.sin(radians);
    
    // Define layout
    var gaugeLayout = {
+      hovermode: false,
       shapes:[{
          type: 'line',
-         x0: 0.5,
-         y0: 0.5,
+         x0: x0,
+         y0: y0,
          x1: x,
          y1: y,
          line: {
@@ -177,7 +159,7 @@ function buildGauge(selectedSample, metadata) {
       }],
       title: "<b>Belly Button Washing Frequency</b><br>Scrubs per Week",
       xaxis: {visible: false, range: [-1,1]},
-      yaxis: {visible: false, range: [0,1]},
+      yaxis: {visible: false, range: [-1,1]},
    };
    
    // Define configuration
