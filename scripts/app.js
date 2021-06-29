@@ -1,21 +1,4 @@
-/* HINT 1
 
- When importing json, try using metadata
-
- d3.json("samples.json").then((data) => {
-    var metadata = data.metadata;
-    var resultArray = metadata.filter(sampleObj => sampleObj.id == sample);
-    var result = resultArray[0];
-
-    console.log(result);
-
- });
-
-HINT 2
-
- Event Listener is different in this html, review id="selDataset" in index.html
- <select id="selDataset" onchange="optionChanged(this.value)"></select> 
- */
 
  
 //Get Data
@@ -29,7 +12,7 @@ sampleIds.forEach((id) => {
    dropMenu.append("option").text(id).property("value",id);
 });
 
-// Initialize page
+// Initialize page with first Test Subject
 popDemographic(sampleIds[0],data.metadata);
 buildBar(sampleIds[0], data.samples);
 buildGauge(sampleIds[0], data.metadata);
@@ -51,7 +34,7 @@ function popDemographic(selectedSample, metadata) {
    var demoPanel = d3.select("#sample-metadata");
    demoPanel.selectAll("p").remove();
    Object.entries(meta[0]).forEach(([key, value]) => {
-      console.log(`Metadata [Key: ${key}, Value: ${value}]`);
+      // console.log(`Metadata [Key: ${key}, Value: ${value}]`);
       demoPanel.append('p').text(`${key}: ${value}`);
    });
 };
@@ -61,11 +44,8 @@ function buildBar(selectedSample, samples) {
    // Retrieve selected sample data
    var sampleData = samples.filter(sampleObj => sampleObj.id == selectedSample);
    sampleData = sampleData[0];
-
-   // console.log("------samples-------");
-   // console.log(samples);
    console.log(`------Retrieve samples for sample_id=${selectedSample}-------`);
-   console.log(sampleData);
+   // console.log(sampleData);
 
    // Reorganize data into array of objects
    barData = [];
@@ -98,7 +78,7 @@ function buildBar(selectedSample, samples) {
 
    // Define layout
    var barLayout = {
-      title: `OTUs present in patient ${selectedSample}`
+      title: `OTUs present in Test Subject ${selectedSample}`
    };
 
    // Define configuration
@@ -117,10 +97,11 @@ function buildGauge(selectedSample, metadata) {
    // console.log(meta[0]);
    meta = meta[0];
    var washFreq = meta.wfreq;
-   console.log(washFreq);
+   // console.log(washFreq);
 
-   //https://www.programmersought.com/article/72787385250/
-   //https://stackoverflow.com/questions/53211506/calculating-adjusting-the-needle-in-gauge-chart-plotly-js
+   // The resources I used to develop the gauge was based on the following website
+   // Create interactive charts with Plotly.js, Part 5: Pie charts and gauges - Programmer Sought. (n.d.). 
+   // https://www.programmersought.com/article/72787385250/.    
 
    var gaugeTrace = [{
       type: "pie",
@@ -188,7 +169,7 @@ function buildBubble(selectedSample, samples) {
          size: sampleData.sample_values
       }
    }];
-   console.log(bubbleTrace);
+   // console.log(bubbleTrace);
 
    // Define layout
    var bubbleLayout = {
