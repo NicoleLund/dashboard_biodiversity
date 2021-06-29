@@ -1,4 +1,18 @@
+/* ---------------------------------------------------------
+index.html, app.js
+----
 
+Written in HTML with Bootstrap and D3.js
+
+By Nicole Lund 
+
+The starter code and data for this challenge was 
+provided and can be reviewed in assignment_instructions.
+
+The resource I used to develop the gauge was based on the following website
+   Create interactive charts with Plotly.js, Part 5: Pie charts and gauges - Programmer Sought. (n.d.). 
+   https://www.programmersought.com/article/72787385250/.
+--------------------------------------------------------- */
 
  
 //Get Data
@@ -97,11 +111,7 @@ function buildGauge(selectedSample, metadata) {
    // console.log(meta[0]);
    meta = meta[0];
    var washFreq = meta.wfreq;
-   // console.log(washFreq);
-
-   // The resources I used to develop the gauge was based on the following website
-   // Create interactive charts with Plotly.js, Part 5: Pie charts and gauges - Programmer Sought. (n.d.). 
-   // https://www.programmersought.com/article/72787385250/.    
+   // console.log(washFreq);    
 
    var gaugeTrace = [{
       type: "pie",
