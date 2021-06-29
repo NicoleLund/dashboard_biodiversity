@@ -16,28 +16,31 @@ The resource I used to develop the gauge was based on the following website
 
  
 //Get Data
-var data = jsonData;
-console.log(data);
+d3.json("./data/samples.json").then(function(data) {
+   console.log(data);
 
-// Populate Drop Down Menu
-var dropMenu = d3.select("#selDataset");
-let sampleIds = data.names;
-sampleIds.forEach((id) => {
-   dropMenu.append("option").text(id).property("value",id);
+   // Populate Drop Down Menu
+   var dropMenu = d3.select("#selDataset");
+   let sampleIds = data.names;
+   sampleIds.forEach((id) => {
+      dropMenu.append("option").text(id).property("value",id);
+   });
+
+   // Initialize page with first Test Subject
+   popDemographic(sampleIds[0],data.metadata);
+   buildBar(sampleIds[0], data.samples);
+   buildGauge(sampleIds[0], data.metadata);
+   buildBubble(sampleIds[0], data.samples);
 });
-
-// Initialize page with first Test Subject
-popDemographic(sampleIds[0],data.metadata);
-buildBar(sampleIds[0], data.samples);
-buildGauge(sampleIds[0], data.metadata);
-buildBubble(sampleIds[0], data.samples);
 
 // Update page when Test Subject is changed
 function optionChanged(sample_id) {
-   popDemographic(sample_id,data.metadata);
-   buildBar(sample_id, data.samples);
-   buildGauge(sample_id, data.metadata);
-   buildBubble(sample_id, data.samples);
+   d3.json("./data/samples.json").then(function(data) {
+      popDemographic(sample_id,data.metadata);
+      buildBar(sample_id, data.samples);
+      buildGauge(sample_id, data.metadata);
+      buildBubble(sample_id, data.samples);
+   });
 };
 
 // Add Demographic Info for Test Subject
