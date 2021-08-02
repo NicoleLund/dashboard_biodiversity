@@ -1,4 +1,4 @@
-# dashboard_challenge
+# dashboard_biodiversity
 
 
 UofA Data Analytics Bootcamp Homework Assignment 15-Interactive-Visualizations-and-Dashboards
