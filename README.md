@@ -8,7 +8,7 @@ UofA Data Analytics Bootcamp Homework Assignment 15-Interactive-Visualizations-a
 Build a responsive webpage that displays data according to the users drop down box selection.
 
 ### Webpage link
-https://nicolelund.github.io/dashboard_challenge/
+https://nicolelund.github.io/dashboard_biodiversity/
 
 ### Tools Utilized
 | Webpage | User Interface |
